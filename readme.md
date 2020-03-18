@@ -1,0 +1,25 @@
+### Homework 1 
+#### Delaunay triangulation
+
+Incremental algorithm
+
+https://github.com/juannavascalvente/Delaunay/wiki/Incremental-Delaunay-triangulation
+
+https://www.ti.inf.ethz.ch/ew/Lehre/CG13/lecture/Chapter%206.pdf
+
+https://www.ti.inf.ethz.ch/ew/Lehre/CG13/lecture/Chapter%206.pdf
+
+
+### implementation
+https://github.com/jmespadero/pyDelaunay2D/blob/master/delaunay2D.py
+
+http://page.mi.fu-berlin.de/faniry/files/faniry_aims.pdf
+
+https://pdf.sciencedirectassets.com/271538/1-s2.0-S0304397500X02563/1-s2.0-030439759390024N/main.pdf?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEHsaCXVzLWVhc3QtMSJGMEQCIEc%2BAXxjTGQgDFj3HkT6AO68tET2kzV%2FfI1fPjV%2BPNgqAiACUBG8E47f7jNFiyr7UzAaKdg2W0%2BJiRYgO0Qh%2B3wOSyq0AwhjEAIaDDA1OTAwMzU0Njg2NSIM0nYLpSHtTPaYEe%2FfKpEDKJdZfWy%2BkBKZhJ6Sy14EJmJ2Wt4IGO9MRqCuQXEl3IvTc5XePQj1QiHai0LE11Z6ZjcQ%2F62R%2Bg2pPql11aVSCwSBZjpuP8rtN3B%2B44qj9YhXZ2R3LcLeNSgvvR7UQNbsNSUQ7UrHqRcZlAmlmCdCGykAx3ZLP6mrH1Q0OxOx8ujKPmMc1BT7qJgN7HCHS4SaIEBPKBZrN1hWkqSve8z799FkynDVn7IAuGjoxA%2B2o99cYefGNmu07iZ6tgUV%2FdDSkclWd2jqSe46l%2Fta%2BPhL8UTAn3oSZtUV6vlgBgyws%2BIKIX4rpC0ATWjL3bxrFtARpMw0%2FEcESOJNZ6oSxA9oz02dN1xoDSGjt4mRbw%2BI6Zr6WzyQTRCtoCT%2Bae9cPDukLzgBsRqKYeSi%2BfblES7ipi0TvNRq%2Fg44LsAcTfpJwi0PDGXL7PDCFtVXQlov4uQejcqmN37lPHzAtY%2Bl2IIgvejs2igdJqseo4Ik2TluY6dRLRZJfF8m0K9%2BVs5R3ASLuoz6noPWw7KRSJ3AbCMxxG0ww7q08wU67AFv9pKk1fcRybi23dgcJczL6yGFYKwRCR6E4S0yIqgEinBDgq0cXxP2fREpY38BW7b2OqR4wgEaDGUnGPhdYYdefw%2BDN2BfnnvZwNsUwblsqQ5l8KtKMTdA%2BqXioV0gqQ%2FMi1K9VDCiXnfoMcsbikNw6Z4S0%2B8XnAFO4KrI7BdN3xEOP43wxUR8w%2FvTOYnP5cEzK35VUgYwrFG57qkP8ibsQseaQS7l3%2Fr9zzL0pva46dSpv8zW02TN0SiL5q7M2WSYvwZDyamdc3GMMTlVobxu%2BNvpFw5B4uMCCnxNDjqF%2FqTQfEof0kYaQqiIoA%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200314T181522Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIAQ3PHCVTY6SCNMAEU%2F20200314%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=b83de0b5de9bac1513c0827575e05ed2bddedd077ac7476c0af1b2d8d138b04a&hash=b90499503b4eb7fa4ea6fd6d796801307bafd417b4d9edb1fb80f5e14d8c8236&host=68042c943591013ac2b2430a89b270f6af2c76d8dfd086a07176afe7c76c2c61&pii=030439759390024N&tid=spdf-955df217-6611-471e-a74f-bb4fffcfc3ec&sid=394e563a8d0155456a4998f057f002ee8976gxrqb&type=client
+same as
+https://hal.inria.fr/inria-00075419/document
+
+
+
+http://code.activestate.com/recipes/579021-delaunay-triangulation/
+http://www.s-hull.org/paper/s_hull.pdf

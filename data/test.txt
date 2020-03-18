@@ -1,0 +1,16 @@
+# https://technology.cpm.org/general/3dgraph/?graph3ddata=____bHyg4ywew7kIzbIxQOw7kJw7kx1Yw7kKywewcKw7kLv-AyLow7kMwcKw7kw7kHxQOvxgw7kIx1Yxmuw7kJwWawcKw7kKwG0xBEw7kLw7kzbIw7kMxBEwG0w7k
+8 9 0
+0 9 0
+0 4 0
+6 -4 0
+-5 7 0
+-4 0 0
+3 -5 0
+4 1 0
+-1 -4 0
+-2 2 0
+0 -9 0
+2 -2 0
+-8 -7 0
+-6 3 0
+-4 -6 0
