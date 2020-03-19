@@ -8,7 +8,6 @@ class Triangle:
         self.points = points
         self.parent = parent
         self.children = set()
-        self.edges = dict()  # TODO this is useles, used only for print, delete later
 
         if create_edges:
             v1, v2, v3 = points
@@ -23,7 +22,6 @@ class Triangle:
                 key = "{}:{}".format(p1, p2)
                 edge = self.all_edges.get(key)
                 if edge:
-                    self.edges[key] = edge  # Currently unused
                     if self.parent:
                         if self.parent == edge.triangle1:
                             edge.triangle1 = self
@@ -33,7 +31,6 @@ class Triangle:
                         edge.triangle2 = self
                 else:
                     edge = Edge(p1, p2, self)
-                    self.edges[key] = edge
                     self.all_edges[key] = edge
 
     @classmethod
@@ -45,10 +42,6 @@ class Triangle:
         # Delete edge from all edges in DAG
         del cls.all_edges[key]
 
-    def remove_edge(self, key):
-        # Remove triangle instance's edge from 3 edges list
-        del self.edges[key]
-
     @classmethod
     def plot_all_edges(cls):
         plot_edges(cls.all_edges)
@@ -59,18 +52,11 @@ class Triangle:
         self.edges[new_edge.key] = new_edge
 
     def get_neighbour(self, e):
-        # TODO parameter edge!
-        # Get neighbour by edge
-        # sort = sorted((v1, v2))
-        # key = "{}:{}".format(sort[0], sort[1])
-        #
-        # e = self.all_edges.get(key)
         if e.triangle1 and self == e.triangle1:
             return e.triangle2
         elif e.triangle2 and self == e.triangle2:
             return e.triangle1
 
-        print("no neighbours")
         return None
 
     def to_string(self):
@@ -78,11 +64,7 @@ class Triangle:
         return "{}, {}, {}".format(p1, p2, p3)
 
     def print(self):
-        points = set()
-        for _, e in self.edges.items():
-            points.add(e.point_from)
-            points.add(e.point_to)
-        print(points)
+        print(self.points)
 
     def print_parent(self):
         self.parent.print()
@@ -108,14 +90,7 @@ class Triangle:
     def in_circumcicle(self, p):
         # Returns true if p lies in the circumcircle of triangle (v1, v2, v3)
         v1, v2, v3 = self.points
-        v1, v2, v3 = clockwise(v1, v2, v3)
 
-        # d = np.array([
-        #     [v1[0], v1[1], (v1[0] ** 2) + (v1[1] ** 2), 1],
-        #     [v2[0], v2[1], (v2[0] ** 2) + (v2[1] ** 2), 1],
-        #     [v3[0], v3[1], (v3[0] ** 2) + (v3[1] ** 2), 1],
-        #     # [p[0], p[1], (p[0] ** 2) + (p[1] ** 2), 1]
-        # ])
         ax_ = v1[0]-p[0]
         ay_ = v1[1]-p[1]
         bx_ = v2[0]-p[0]
@@ -123,13 +98,6 @@ class Triangle:
         cx_ = v3[0]-p[0]
         cy_ = v3[1]-p[1]
         return ((ax_ * ax_ + ay_ * ay_) * (bx_ * cy_ - cx_ * by_) - (bx_ * bx_ + by_ * by_) * (ax_ * cy_ - cx_ * ay_) + (cx_ * cx_ + cy_ * cy_) * (ax_ * by_ - bx_ * ay_)) > 0
-        # det = np.linalg.det(d)
-        # if det equal 0 then d is on C
-        # if det == 0:
-        #     print("huge problem")
-
-        # if det greater 0 then d is inside C
-        # return det > 0
 
     def find_bad_triangles(self, p=None):
         # Check if not already in bad triangles
@@ -157,16 +125,6 @@ class Triangle:
         https://www.gamedev.net/forums/topic.asp?topic_id=295943
         """
         v1, v2, v3 = self.points
-        # v1, v2, v3 = clockwise(v1, v2, v3)
-        # #
-        # d1 = self.sign(point, v1, v2)
-        # d2 = self.sign(point, v2, v3)
-        # d3 = self.sign(point, v3, v1)
-        # 
-        # has_neg = d1 < 0 or d2 < 0 or d3 < 0
-        # has_pos = d1 > 0 or d2 > 0 or d3 > 0
-        # 
-        # return not (has_neg and has_pos)
 
         c1 = (v2[0] - v1[0]) * (point[1] - v1[1]) - (v2[1] - v1[1]) * (point[0] - v1[0])
         c2 = (v3[0] - v2[0]) * (point[1] - v2[1]) - (v3[1] - v2[1]) * (point[0] - v2[0])
@@ -188,3 +146,4 @@ class Edge:
         self.triangle2 = triangle2
 
         # TODO triangles should be dict with 2 triangles, easy to update
+        # MUST DO THAT! also much nicer code

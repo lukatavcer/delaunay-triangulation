@@ -40,8 +40,8 @@ D = Triangle(root_triangle)
 # plot_points(points)
 
 
-def clockwise(a, b, c):
-    # Return points in clockwise direction
+def counterclockwise(a, b, c):
+    # Return points in counterclockwise direction
     ccw = (b[0] - a[0]) * (c[1] - a[1]) - (c[0] - a[0]) * (b[1] - a[1]) > 0  # > 0 is CCW
 
     if ccw:
@@ -51,7 +51,6 @@ def clockwise(a, b, c):
 
 
 def validate(p, t, v1, v2):
-    p, v1, v2 = clockwise(p, v1, v2)
     old_edge_from, old_edge_to = sorted((v1, v2))
     key = "{}:{}".format(old_edge_from, old_edge_to)
     e = D.all_edges.get(key)
@@ -73,8 +72,8 @@ def validate(p, t, v1, v2):
             (neighbour_root) = list(set(neighbour.points).difference(set([v1, v2])))[0]  # must be nicer!
 
             # Create new triangles
-            t1 = Triangle([v1, p, neighbour_root], parent=t, create_edges=False)
-            t2 = Triangle([p, v2, neighbour_root], parent=t, create_edges=False)
+            t1 = Triangle([p, v1, neighbour_root], parent=t, create_edges=False)
+            t2 = Triangle([p, neighbour_root, v2], parent=t, create_edges=False)
 
             fr, to = sorted((p, neighbour_root))
             new_edge = Edge(fr, to, t1, t2)
@@ -82,17 +81,12 @@ def validate(p, t, v1, v2):
             print("Add edge: " + key)
             D.add_edge(key, new_edge)  # Add edge to DAG all edges
 
-            t1.edges[key] = new_edge
-            t2.edges[key] = new_edge
-
             # * * * * * * +
             #    FIX t2
             # * * * * * * +
-            # Add edge (v2 -> p) to neighbour.edges
             e_from, e_to = sorted((v2, p))
             key = "{}:{}".format(e_from, e_to)
             change_edge = D.all_edges.get(key)
-            t2.edges[key] = change_edge
 
             D.plot_all_edges()
             # Set edge triangle1 and triangle2
@@ -106,7 +100,6 @@ def validate(p, t, v1, v2):
             e_from, e_to = sorted((v2, neighbour_root))
             key = "{}:{}".format(e_from, e_to)
             change_edge = D.all_edges.get(key)
-            t2.edges[key] = change_edge
 
             # Set edge triangle1 and triangle2
             if change_edge.triangle1 == neighbour:
@@ -116,14 +109,12 @@ def validate(p, t, v1, v2):
             else:
                 print("ERROR")
 
-
             # * * * * * * +
             #    FIX t1
             # * * * * * * +
             e_from, e_to = sorted((neighbour_root, v1))
             key = "{}:{}".format(e_from, e_to)
             change_edge = D.all_edges.get(key)
-            t1.edges[key] = change_edge
 
             # Set edge triangle1 and triangle2
             if change_edge.triangle1 == neighbour:
@@ -136,7 +127,6 @@ def validate(p, t, v1, v2):
             e_from, e_to = sorted((v1, p))
             key = "{}:{}".format(e_from, e_to)
             change_edge = D.all_edges.get(key)
-            t1.edges[key] = change_edge
 
             # Set edge triangle1 and triangle2
             if change_edge.triangle1 == t:
@@ -150,16 +140,16 @@ def validate(p, t, v1, v2):
 
             # Must determine and put edge in CW direction
             # Validate T1
-            adj_edge = t1.points[:]  # fastest way to copy
+            adj_edge = t1.points[:]  # fastest way to copy list
             adj_edge.remove(p)
-            a, b, c = clockwise(p, adj_edge[0], adj_edge[1])
-            validate(p, t1, b, c)  # TODO must find adjacent vertices not v1 v2, adjacent edge to t1 and p
+            a, b, c = counterclockwise(p, adj_edge[0], adj_edge[1])
+            validate(p, t1, b, c)
 
             # Validate T2
-            adj_edge = t2.points[:]  # fastest way to copy
+            adj_edge = t2.points[:]  # fastest way to copy list
             adj_edge.remove(p)
-            a, b, c = clockwise(p, adj_edge[0], adj_edge[1])
-            validate(p, t2, b, c)  # TODO same
+            a, b, c = counterclockwise(p, adj_edge[0], adj_edge[1])
+            validate(p, t2, b, c)
 
             print(" -------------------- ")
 
@@ -181,7 +171,7 @@ for p in points:
         print("")
 
     # Locate triangle that encloses the point
-    # find where on the DAG point is located
+    # find where in the DAG point is located
     parent, is_on_edge = D.find_child(p)
     print("Parent:")
     parent.print()
@@ -190,30 +180,23 @@ for p in points:
     # TODO on the edge of triangle check is missing (where we create 4 triangles)
     # Create 3 or 4 new triangles
     # construct 3 edges to connect new point to points of found leaf triangle
-    # TODO make sure they are CCW
     new_triangles = []
-    v1, v2, v3 = parent.points
+    v1, v2, v3 = counterclockwise(*parent.points)
 
     t1 = Triangle([p, v1, v2], parent=parent)
     t2 = Triangle([p, v2, v3], parent=parent)
     t3 = Triangle([p, v3, v1], parent=parent)
 
+    # Store new triangles to Delaunay tree graph
     parent.children.update([t1, t2, t3])
 
-    # Check if parent edges are valid
-    # parent = (v1, v2)
-    # neighbour = parent.neighbours.get(sorted(v1) + ":" + sorted(v2))
-    a, b, c = clockwise(p, v1, v2)
-    validate(p, t1, b, c)
-    a, b, c = clockwise(p, v2, v3)
-    validate(p, t2, b, c)
-    a, b, c = clockwise(p, v3, v1)
-    validate(p, t3, b, c)
+    # Check if parent triangle's edges are valid
+    validate(p, t1, v1, v2)
+    validate(p, t2, v2, v3)
+    validate(p, t3, v3, v1)
 
     D.plot_all_edges()
-    # Update the DCEL and the tree with the new triangles.
 
-    # Check if any edge is not a Delaunay edge and flip it if not.
 
 # # Remove edges that connect to root triangle
 # for edge in D.all_edges:
