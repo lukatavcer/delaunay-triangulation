@@ -9,6 +9,9 @@ def plot_edges(edges):
     triangle_x = []
     triangle_y = []
     plt.figure()
+    xes = []
+    yes = []
+
     for _, e in edges.items():
         x = [
             e.point_from[0],
@@ -19,7 +22,11 @@ def plot_edges(edges):
             e.point_to[1]
         ]
 
+        xes += x
+        yes += y
+
         plt.plot(x, y)
+        plt.plot(x, y, 'or')
         # triangle_x.append(e.point_from[0])
         # triangle_x.append(e.point_to[0])
         # triangle_y.append(e.point_from[0])
@@ -28,13 +35,16 @@ def plot_edges(edges):
     # plt.triplot(triangle_x, triangle_y)
 
     # Bounding triangle
-    max_M = 9  # hardcoded
-    triangle_x = (3 * max_M, 0, -3 * max_M)
-    triangle_y = (0, 3 * max_M, -3 * max_M)
+    # max_M = 9  # hardcoded
+    xes = np.array(xes)
+    yes = np.array(yes)
+    max_M = int(max(xes.max(), xes.min(), yes.max(), yes.min(), key=abs))
+    triangle_x = (max_M, 0, -max_M)
+    triangle_y = (0, max_M, -max_M)
     plt.triplot(triangle_x, triangle_y)
 
     # Set tick step
-    r = np.arange(-3 * max_M, 3 * max_M + 1, AXIS_TICKS)
+    r = np.arange(-max_M, max_M + 1, AXIS_TICKS)
     plt.xticks(r)
     plt.yticks(r)
 

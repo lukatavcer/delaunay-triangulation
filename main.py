@@ -1,7 +1,4 @@
-import matplotlib.pyplot as plt
-from laspy.file import File
 import numpy as np
-from plot import plot_points
 from triangle import Triangle, Edge
 
 # Read LAZ File
@@ -13,9 +10,11 @@ from triangle import Triangle, Edge
 # points = list(zip(inFile.get_x()[:100], inFile.get_y()[:100]))
 #
 
+f = 'data/test.txt'
+# f = 'data/armin.txt'
 
 # Read points
-file = open('data/test.txt', 'r')
+file = open(f, 'r')
 Lines = file.readlines()
 
 points = []
@@ -28,49 +27,164 @@ for line in Lines:
         point = np.array(line.strip().split(), dtype=int)
         points.append((point[0], point[1]))
 
-print(points)
-
-
-# Create imaginary triangle with root in a node with the highest lexicographic order.
-# A point (x,y) is higher than other (u,v) in lexicographic order if if either x < u or both x = u and y < v
-
+# Create imaginary triangle that contains all points
 x_list = np.asarray([x[0] for x in points], dtype=int)
 y_list = np.asarray([y[1] for y in points], dtype=int)
 max_M = int(max(x_list.max(), x_list.min(), y_list.max(), y_list.min(), key=abs))
 root_triangle = [(3 * max_M, 0), (0, 3 * max_M), (-3 * max_M, -3 * max_M)]
 
 # This is root DAG structure with root triangle
-# D for Delaunay
 D = Triangle(root_triangle)
 
-
-def in_circle(v1, v2, v3, p):
-    # in_circle
-    # Returns true if p lies in the circumcircle of triangle (v1, v2, v3)
-    d = np.array([
-        [v1[0], v1[1], v1[0] ** 2 + v1[1] ** 2, 1],
-        [v2[0], v2[1], v2[0] ** 2 + v2[1] ** 2, 1],
-        [v3[0], v3[1], v3[0] ** 2 + v3[1] ** 2, 1],
-        [p[0], p[1], p[0] ** 2 + p[1] ** 2, 1]
-    ])
-
-    # if det equal 0 then d is on C
-
-    # if det greater 0 then d is inside C
-    return np.linalg.det(d) > 0
-
-print()
-
 # Plot points
-plot_points(points)
+# plot_points(points)
+
+
+def clockwise(a, b, c):
+    # Return points in clockwise direction
+    ccw = (b[0] - a[0]) * (c[1] - a[1]) - (c[0] - a[0]) * (b[1] - a[1]) > 0  # > 0 is CCW
+
+    if ccw:
+        return a, b, c
+
+    return a, c, b
+
+
+def validate(p, t, v1, v2):
+    p, v1, v2 = clockwise(p, v1, v2)
+    old_edge_from, old_edge_to = sorted((v1, v2))
+    key = "{}:{}".format(old_edge_from, old_edge_to)
+    e = D.all_edges.get(key)
+    neighbour = t.get_neighbour(e)
+
+    if neighbour and neighbour != t:
+        # Check if p is in neighbour's circumcircle
+        flip = neighbour.in_circumcicle(p)
+        if flip:
+            print("FLIP EDGE")
+            D.plot_all_edges()
+
+            # Remove old edge
+            print("Remove edge: " + key)
+            D.delete_edge(key)
+
+            # Add new edge
+            # TODO make use of points, update when removing edges -> use edges to find adjacent point
+            (neighbour_root) = list(set(neighbour.points).difference(set([v1, v2])))[0]  # must be nicer!
+
+            # Create new triangles
+            t1 = Triangle([v1, p, neighbour_root], parent=t, create_edges=False)
+            t2 = Triangle([p, v2, neighbour_root], parent=t, create_edges=False)
+
+            fr, to = sorted((p, neighbour_root))
+            new_edge = Edge(fr, to, t1, t2)
+            key = new_edge.key
+            print("Add edge: " + key)
+            D.add_edge(key, new_edge)  # Add edge to DAG all edges
+
+            t1.edges[key] = new_edge
+            t2.edges[key] = new_edge
+
+            # * * * * * * +
+            #    FIX t2
+            # * * * * * * +
+            # Add edge (v2 -> p) to neighbour.edges
+            e_from, e_to = sorted((v2, p))
+            key = "{}:{}".format(e_from, e_to)
+            change_edge = D.all_edges.get(key)
+            t2.edges[key] = change_edge
+
+            D.plot_all_edges()
+            # Set edge triangle1 and triangle2
+            if change_edge.triangle1 == t:
+                change_edge.triangle1 = t2
+            elif change_edge.triangle2 == t:
+                change_edge.triangle2 = t2
+            else:
+                print("ERROR")
+
+            e_from, e_to = sorted((v2, neighbour_root))
+            key = "{}:{}".format(e_from, e_to)
+            change_edge = D.all_edges.get(key)
+            t2.edges[key] = change_edge
+
+            # Set edge triangle1 and triangle2
+            if change_edge.triangle1 == neighbour:
+                change_edge.triangle1 = t2
+            elif change_edge.triangle2 == neighbour:
+                change_edge.triangle2 = t2
+            else:
+                print("ERROR")
+
+
+            # * * * * * * +
+            #    FIX t1
+            # * * * * * * +
+            e_from, e_to = sorted((neighbour_root, v1))
+            key = "{}:{}".format(e_from, e_to)
+            change_edge = D.all_edges.get(key)
+            t1.edges[key] = change_edge
+
+            # Set edge triangle1 and triangle2
+            if change_edge.triangle1 == neighbour:
+                change_edge.triangle1 = t1
+            elif change_edge.triangle2 == neighbour:
+                change_edge.triangle2 = t1
+            else:
+                print("ERROR")
+
+            e_from, e_to = sorted((v1, p))
+            key = "{}:{}".format(e_from, e_to)
+            change_edge = D.all_edges.get(key)
+            t1.edges[key] = change_edge
+
+            # Set edge triangle1 and triangle2
+            if change_edge.triangle1 == t:
+                change_edge.triangle1 = t1
+            elif change_edge.triangle2 == t:
+                change_edge.triangle2 = t1
+            else:
+                print("ERROR")
+
+            D.plot_all_edges()
+
+            # Must determine and put edge in CW direction
+            # Validate T1
+            adj_edge = t1.points[:]  # fastest way to copy
+            adj_edge.remove(p)
+            a, b, c = clockwise(p, adj_edge[0], adj_edge[1])
+            validate(p, t1, b, c)  # TODO must find adjacent vertices not v1 v2, adjacent edge to t1 and p
+
+            # Validate T2
+            adj_edge = t2.points[:]  # fastest way to copy
+            adj_edge.remove(p)
+            a, b, c = clockwise(p, adj_edge[0], adj_edge[1])
+            validate(p, t2, b, c)  # TODO same
+
+            print(" -------------------- ")
+
+            # Add parent pointer to new triangles
+            t.children.update([t1, t2])
+
+            # Neighbour also gets new triangles as children
+            neighbour.children.update([t1, t2])
+
 
 print("Start inserting points:")
 # Loop remaining points
 for p in points:
+    print("Insert point: " + str(p))
+
+    if p[0] == -2 and p[1] == 2:
+        print("")
+    if p[0] == 0 and p[1] == 9:
+        print("")
+
     # Locate triangle that encloses the point
     # find where on the DAG point is located
-    parent = D.find_child(p)
-    print(parent.to_string())
+    parent, is_on_edge = D.find_child(p)
+    print("Parent:")
+    parent.print()
     print("")
 
     # TODO on the edge of triangle check is missing (where we create 4 triangles)
@@ -84,65 +198,26 @@ for p in points:
     t2 = Triangle([p, v2, v3], parent=parent)
     t3 = Triangle([p, v3, v1], parent=parent)
 
+    parent.children.update([t1, t2, t3])
+
     # Check if parent edges are valid
     # parent = (v1, v2)
     # neighbour = parent.neighbours.get(sorted(v1) + ":" + sorted(v2))
-    # Get neighbour of edge v1 & v2
-    neighbour = t1.get_neighbour(v1, v2)
-    if neighbour and neighbour != t1:
-        # Check if p is in neighbour's circumcircle
-        flip = neighbour.in_circumcicle(p)
-        print("Should flip edge: " + str(flip))
-        if flip:
-            print("SHOULD FLIP IMPLEMENT")
-            # TODO imam t1 in neighbour
-            # torej odstraniti moram edge (v1, v2) (pazi na self.edges, ce se kje uporabi sploh)
-            # self.edges obsolete?
-            # kreirati edge izmed remaining dveh vozlisc (p, NEIGHBOUR tretje vozslice)
-
-            # Remove old edge
-            D.remove_edge
-            (neighbour_root) = list(set(neighbour.points).difference(set([v1, v2])))[0]  # must be nicer!
-            flip_edge = Edge(p, neighbour_root, t1, neighbour)
-
-        # Flip edge
-
-        # Repeat validation for new triangles after flip
-
-    neighbour = t2.get_neighbour(v2, v3)
-    if neighbour and neighbour != t2:
-        # Check if p is in neighbour's circumcircle
-        flip = neighbour.in_circumcicle(p)
-        print("Should flip edge: " + str(flip))
-        if flip:
-            print("SHOULD FLIP IMPLEMENT")
-
-        # Flip edge
-
-        # Repeat validation for new triangles after flip
-
-    neighbour = t3.get_neighbour(v3, v1)
-    if neighbour and neighbour != t3:
-        # Check if p is in neighbour's circumcircle
-        flip = neighbour.in_circumcicle(p)
-        print("Should flip edge: " + str(flip))
-        if flip:
-            print("SHOULD FLIP IMPLEMENT")
-
-        # Flip edge
-
-        # Repeat validation for new triangles after flip
-
-
-
-    parent.children = [t1, t2, t3]
-
+    a, b, c = clockwise(p, v1, v2)
+    validate(p, t1, b, c)
+    a, b, c = clockwise(p, v2, v3)
+    validate(p, t2, b, c)
+    a, b, c = clockwise(p, v3, v1)
+    validate(p, t3, b, c)
 
     D.plot_all_edges()
-    # D.find_bad_triangles(p)
-    # bad = D.bad
-    # print(bad)
     # Update the DCEL and the tree with the new triangles.
 
     # Check if any edge is not a Delaunay edge and flip it if not.
 
+# # Remove edges that connect to root triangle
+# for edge in D.all_edges:
+#     if edge.point_from in root_triangle or edge.point_to in root_triangle:
+#         D.delete_edge(edge.key)
+
+D.plot_all_edges()
