@@ -164,33 +164,34 @@ print("Start inserting points:")
 # Loop remaining points
 for p in points:
     print("Insert point: " + str(p))
-
     if p[0] == -2 and p[1] == 2:
-        print("")
-    if p[0] == 0 and p[1] == 9:
         print("")
 
     # Locate triangle that encloses the point
     # find where in the DAG point is located
-    parent, is_on_edge = D.find_child(p)
+    t, point_on_edge = D.find_child(p)
+
+    # Point lies on edge of triangle
+    if point_on_edge:
+        print("on edge")
     print("Parent:")
-    parent.print()
+    t.print()
     print("")
 
     # TODO on the edge of triangle check is missing (where we create 4 triangles)
     # Create 3 or 4 new triangles
     # construct 3 edges to connect new point to points of found leaf triangle
     new_triangles = []
-    v1, v2, v3 = counterclockwise(*parent.points)
+    v1, v2, v3 = counterclockwise(*t.points)
 
-    t1 = Triangle([p, v1, v2], parent=parent)
-    t2 = Triangle([p, v2, v3], parent=parent)
-    t3 = Triangle([p, v3, v1], parent=parent)
+    t1 = Triangle([p, v1, v2], parent=t)
+    t2 = Triangle([p, v2, v3], parent=t)
+    t3 = Triangle([p, v3, v1], parent=t)
 
     # Store new triangles to Delaunay tree graph
-    parent.children.update([t1, t2, t3])
+    t.children.update([t1, t2, t3])
 
-    # Check if parent triangle's edges are valid
+    # Check if parent triangle's edges are still valid after the new point was inserted
     validate(p, t1, v1, v2)
     validate(p, t2, v2, v3)
     validate(p, t3, v3, v1)

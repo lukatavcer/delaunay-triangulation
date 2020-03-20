@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b8da0eff-7206-4f51-95d8-21db4fafd4c9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/data/armin.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myplot.png" beforeDir="false" afterPath="$PROJECT_DIR$/plots/myplot.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/plots/plot.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/triangle.py" beforeDir="false" afterPath="$PROJECT_DIR$/triangle.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,7 +13,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/nrg$main.coverage" NAME="main Coverage Results" MODIFIED="1584659143343" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/nrg$main.coverage" NAME="main Coverage Results" MODIFIED="1584665787999" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -35,22 +32,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/readme.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="165">
-                <caret line="11" selection-start-line="11" selection-end-line="11" />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="219">
-              <caret line="160" column="31" selection-start-line="160" selection-start-column="22" selection-end-line="160" selection-end-column="31" />
+            <state relative-caret-position="699">
+              <caret line="190" column="26" lean-forward="true" selection-start-line="190" selection-start-column="26" selection-end-line="190" selection-end-column="28" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -61,8 +46,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/triangle.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="10" column="19" lean-forward="true" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
+            <state relative-caret-position="283">
+              <caret line="113" selection-start-line="113" selection-end-line="113" />
             </state>
           </provider>
         </entry>
@@ -99,24 +84,10 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>key()</find>
-      <find>new_edge</find>
-      <find>ghbour_root, v2)</find>
-      <find>.children</find>
-      <find>v1</find>
-      <find>children</find>
-      <find>Triangle(</find>
-      <find>Edge</find>
-      <find>triangle1</find>
-      <find>t2</find>
-      <find>t1</find>
-      <find>validate</find>
       <find>-8 -7</find>
       <find>root_triangle</find>
       <find>plot_points</find>
-      <find>clockw</find>
       <find>AXIS_TICKS</find>
-      <find>sign</find>
       <find>clockwi</find>
       <find>key</find>
       <find>point_insi</find>
@@ -125,10 +96,24 @@
       <find>parent.children.update</find>
       <find>on_edge</find>
       <find>in_circle</find>
-      <find>clockwise</find>
-      <find>points</find>
       <find>old_po</find>
       <find>self.edges</find>
+      <find>edges[key]</find>
+      <find>.edges</find>
+      <find>points</find>
+      <find>change_edge</find>
+      <find>parent.points</find>
+      <find>clockwise</find>
+      <find>clockw</find>
+      <find>find_bad_triangles</find>
+      <find>found</find>
+      <find>.points</find>
+      <find>point_on_edge</find>
+      <find>parent</find>
+      <find>replace_edge</find>
+      <find>to_string</find>
+      <find>print_parent</find>
+      <find>sign</find>
     </findStrings>
     <replaceStrings>
       <replace>t</replace>
@@ -174,11 +159,6 @@
               <item name="nrg" type="b2602c69:ProjectViewProjectNode" />
               <item name="nrg" type="462c0819:PsiDirectoryNode" />
               <item name="data" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="nrg" type="b2602c69:ProjectViewProjectNode" />
-              <item name="nrg" type="462c0819:PsiDirectoryNode" />
-              <item name="plots" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -260,12 +240,20 @@
       <workItem from="1584521937589" duration="31117000" />
       <workItem from="1584614387773" duration="2712000" />
       <workItem from="1584637487706" duration="3281000" />
-      <workItem from="1584646281633" duration="10658000" />
+      <workItem from="1584646281633" duration="16915000" />
     </task>
+    <task id="LOCAL-00001" summary="Code refactor &amp; cleanup">
+      <created>1584661243459</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1584661243459</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="85602000" />
+    <option name="totallyTimeSpent" value="91859000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -286,12 +274,12 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3182773" />
-      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.34663865" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.34663865" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32983193" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32983193" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="8" visible="true" weight="0.32983193" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.3277311" />
@@ -299,30 +287,55 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info active="true" anchor="right" id="SciView" order="3" visible="true" weight="0.32977587" />
+      <window_info anchor="right" id="SciView" order="3" visible="true" weight="0.32977587" />
       <window_info anchor="right" id="Database" order="4" weight="0.32977587" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Code refactor &amp; cleanup" />
+    <option name="LAST_COMMIT_MESSAGE" value="Code refactor &amp; cleanup" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/triangle.py</url>
-          <line>142</line>
-          <option name="timeStamp" value="140" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/triangle.py</url>
-          <line>128</line>
-          <option name="timeStamp" value="174" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
-          <line>185</line>
-          <option name="timeStamp" value="214" />
+          <line>175</line>
+          <option name="timeStamp" value="227" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/triangle.py</url>
+          <line>88</line>
+          <option name="timeStamp" value="233" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -457,16 +470,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/readme.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="165">
-            <caret line="11" selection-start-line="11" selection-end-line="11" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/plots/myplot2.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -503,9 +506,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/plots/myplot5.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file:///usr/lib/python3.6/codecs.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="567">
@@ -513,10 +513,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/plots/myplot5.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/readme.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="165">
+            <caret line="11" selection-start-line="11" selection-end-line="11" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="160" column="31" selection-start-line="160" selection-start-column="22" selection-end-line="160" selection-end-column="31" />
+        <state relative-caret-position="699">
+          <caret line="190" column="26" lean-forward="true" selection-start-line="190" selection-start-column="26" selection-end-line="190" selection-end-column="28" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
@@ -525,8 +538,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/triangle.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="19" lean-forward="true" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
+        <state relative-caret-position="283">
+          <caret line="113" selection-start-line="113" selection-end-line="113" />
         </state>
       </provider>
     </entry>

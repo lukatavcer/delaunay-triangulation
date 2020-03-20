@@ -46,10 +46,20 @@ class Triangle:
     def plot_all_edges(cls):
         plot_edges(cls.all_edges)
 
-    def replace_edge(self, old_edge_key, new_edge):
-        # Replace edge from triangle's edges, this will make it open
-        del self.edges[old_edge_key]
-        self.edges[new_edge.key] = new_edge
+
+    @staticmethod
+    def cross(p, v1, v2):
+        """
+            Check if point p lies on the line between v1 and v2 points.
+            https://stackoverflow.com/questions/11907947/how-to-check-if-a-point-lies-on-a-line-between-2-other-points
+        """
+        dxc = p[0] - v1[0]
+        dyc = p[1] - v1[1]
+
+        dxl = v2[0] - v1[0]
+        dyl = v2[1] - v1[1]
+
+        return dxc * dyl - dyc * dxl == 0
 
     def get_neighbour(self, e):
         if e.triangle1 and self == e.triangle1:
@@ -59,33 +69,35 @@ class Triangle:
 
         return None
 
-    def to_string(self):
-        p1, p2, p3 = self.points
-        return "{}, {}, {}".format(p1, p2, p3)
-
     def print(self):
         print(self.points)
 
-    def print_parent(self):
-        self.parent.print()
-
     def find_child(self, point):
-        found = None
-        is_on_edge = True
 
-        # Traverse triangle children to get to the leaf node (triangle) which contains current point
-        if self.children:
-            # If triangle has children, one of them must contain the point,
-            # if not, the point is on the edge of one child.
-            for child in self.children:
-                found, is_on_edge = child.find_child(point)
-                if found:
-                    return found, False
+        if self.point_inside(point):
+            # Traverse triangle's children to get to the leaf node (triangle) which contains current point
+            if self.children:
+                # If triangle has children, one of them must contain the point,
+                # if not, the point is on the edge of one child.
+                for child in self.children:
+                    found, point_on_edge = child.find_child(point)
+                    if found:
+                        return found, point_on_edge
 
-        elif self.point_inside(point):
-                return self, False
+                for child in self.children:
+                    # Check on which child the point lies
+                    if not child.children:
+                        v1, v2, v3 = child.points
+                        if self.cross(point, v1, v2):
+                            return self, (v1, v2)
+                        elif self.cross(point, v1, v3):
+                            return self, (v1, v3)
+                        elif self.cross(point, v2, v3):
+                            return self, (v2, v3)
 
-        return found, is_on_edge
+            return self, None
+
+        return None, None
 
     def in_circumcicle(self, p):
         # Returns true if p lies in the circumcircle of triangle (v1, v2, v3)
@@ -99,28 +111,9 @@ class Triangle:
         cy_ = v3[1]-p[1]
         return ((ax_ * ax_ + ay_ * ay_) * (bx_ * cy_ - cx_ * by_) - (bx_ * bx_ + by_ * by_) * (ax_ * cy_ - cx_ * ay_) + (cx_ * cx_ + cy_ * cy_) * (ax_ * by_ - bx_ * ay_)) > 0
 
-    def find_bad_triangles(self, p=None):
-        # Check if not already in bad triangles
-        if self not in self.good and self not in self.bad:
-            # If bad, add to bad triangles
-            if self.in_circumcicle(p):
-                self.bad.add(self)
-            else:
-                self.good.add(self)
-
-        for child in self.children:
-            child.find_bad_triangles(p)
-
-
-    @staticmethod
-    def sign(p1, p2, p3):
-        return (p1[0] - p3[0]) * (p2[1] - p3[1]) - (p2[0] - p3[0]) * (p1[1] - p3[1])
-
     def point_inside(self, point):
         """
         check if point provided as parameter is inside this triangle.
-        :param point:
-        :return:
         https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
         https://www.gamedev.net/forums/topic.asp?topic_id=295943
         """
