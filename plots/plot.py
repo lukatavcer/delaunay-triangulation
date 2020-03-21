@@ -1,13 +1,14 @@
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcd
+
 import numpy as np
 from scipy.spatial import Delaunay
+import random
 
 AXIS_TICKS = 3.0
 
 
 def plot_edges(edges):
-    triangle_x = []
-    triangle_y = []
     plt.figure()
     xes = []
     yes = []
@@ -27,21 +28,51 @@ def plot_edges(edges):
 
         plt.plot(x, y)
         plt.plot(x, y, 'or')
-        # triangle_x.append(e.point_from[0])
-        # triangle_x.append(e.point_to[0])
-        # triangle_y.append(e.point_from[0])
-        # triangle_y.append(e.point_to[0])
-
-    # plt.triplot(triangle_x, triangle_y)
 
     # Bounding triangle
-    # max_M = 9  # hardcoded
     xes = np.array(xes)
     yes = np.array(yes)
     max_M = int(max(xes.max(), xes.min(), yes.max(), yes.min(), key=abs))
     triangle_x = (max_M, 0, -max_M)
     triangle_y = (0, max_M, -max_M)
     plt.triplot(triangle_x, triangle_y)
+
+    # Set tick step
+    r = np.arange(-max_M, max_M + 1, AXIS_TICKS)
+    plt.xticks(r)
+    plt.yticks(r)
+
+    # Set grid
+    plt.grid()
+
+    # Show plot
+    plt.show()
+
+
+def plot_triangles(triangles):
+    plt.figure()
+    xes = []
+    yes = []
+    colors = list(mcd.TABLEAU_COLORS.keys())
+
+    for _, t in triangles.items():
+        triangle_x = []
+        triangle_y = []
+
+        for point in t.points:
+            triangle_x.append(point[0])
+            triangle_y.append(point[1])
+            xes.append(point[0])
+            yes.append(point[1])
+
+            plt.plot(point[0], point[1], 'or')
+        color = random.choice(colors)
+        plt.triplot(triangle_x, triangle_y, c=color)
+
+    # Bounding triangle
+    xes = np.array(xes)
+    yes = np.array(yes)
+    max_M = int(max(xes.max(), xes.min(), yes.max(), yes.min(), key=abs))
 
     # Set tick step
     r = np.arange(-max_M, max_M + 1, AXIS_TICKS)
