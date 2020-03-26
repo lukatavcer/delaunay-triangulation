@@ -7,7 +7,7 @@ http://page.mi.fu-berlin.de/faniry/files/faniry_aims.pdf
 
 ### Triangulation process
 Images step by step triangulation on test.txt data.
-
+![](plots/triangulation.gif)
 
  _<i>_             |                          | <i>
 :-------------------------:|:-------------------------:|:-------------------------:
