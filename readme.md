@@ -12,10 +12,7 @@ Intel Core i7-4710HQ CPU @ 2.50GHz & 16GB RAM.
 ### Triangulation process
 Step by step triangulation on test.txt data.
 
-Starting points
 ![](plots/allpoints.png)
-
-Incremental point insertion
 ![](plots/triangulation.gif)
 
  _<i>_             |                          | <i>
