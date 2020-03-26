@@ -6,9 +6,9 @@ import sys
 sys.setrecursionlimit(10000)
 
 
-def triangulate():
-    test = True
-    # test = False
+def calculate():
+    # test = True
+    test = False
 
     if test:
         f = 'data/test.txt'
@@ -16,6 +16,9 @@ def triangulate():
         file = open(f, 'r')
         lines = file.readlines()
         points = []
+
+        # Point with highest lexicographic order
+        min_x, min_y = None, None
 
         for line in lines:
             if '#' not in line:
@@ -27,7 +30,6 @@ def triangulate():
 
         I = inFile.Classification == 2
 
-        # laz_points = inFile.points[:100]
         point_count = 100000
         points = list(zip(inFile.X[:point_count], inFile.Y[:point_count], inFile.Z[:point_count]))
         # points = np.array(list(zip(inFile.X[:point_count], inFile.Y[:point_count], inFile.Z[:point_count])))
@@ -56,6 +58,7 @@ def triangulate():
             return a, b, c
 
         return a, c, b
+
 
     def validate(p, t, v1, v2):
         key = key_from_points(v1, v2)
@@ -117,9 +120,6 @@ def triangulate():
                 key = key_from_points(v1, p)
                 change_edge = D.all_edges.get(key)
                 change_edge.replace_neighbour(t, t1)
-
-                # Plot changes
-                D.plot_all_edges()
 
                 # Must determine and put edge in CW direction
                 # Validate T1
@@ -246,16 +246,17 @@ def triangulate():
             validate(p, t2, v2, v3)
             validate(p, t3, v3, v1)
 
-        D.plot_all_edges()
+        # D.plot_all_edges()
+
 
     # Remove triangles that connect to root triangle
     root_points = D.points
 
     print("--- %s seconds triangulation ---" % (time.time() - start_time))
 
-    f = open("final_triangulation.obj", "w")
+    f = open("final_triangulation_10k.obj", "w")
     f.write('g\n')
-    f_count = 1
+    cdef int f_count = 1
     triangle_string = ''
 
     start_time = time.time()
@@ -290,6 +291,3 @@ def triangulate():
     if test:
         D.plot_all_edges()
         D.plot_all_triangles()
-
-
-triangulate()

@@ -8,7 +8,7 @@ import random
 AXIS_TICKS = 3.0
 
 
-def plot_edges(edges):
+def plot_edges(edges, step):
     plt.figure()
     xes = []
     yes = []
@@ -46,7 +46,8 @@ def plot_edges(edges):
     plt.grid()
 
     # Show plot
-    plt.show()
+    # plt.show()
+    plt.savefig('plots/step_{}.png'.format(step))
 
 
 def plot_triangles(triangles):

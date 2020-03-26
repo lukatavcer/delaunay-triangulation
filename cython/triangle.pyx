@@ -1,11 +1,35 @@
 from plots.plot import plot_edges, plot_triangles
 import numpy as np
 
+cdef int cross(p, v1, v2):
+        """
+            Check if point p lies on the line between v1 and v2 points.
+            https://stackoverflow.com/questions/11907947/how-to-check-if-a-point-lies-on-a-line-between-2-other-points
+        """
+        cdef long double dxc = p[0] - v1[0]
+        cdef long double dyc = p[1] - v1[1]
+
+        cdef long double dxl = v2[0] - v1[0]
+        cdef long double dyl = v2[1] - v1[1]
+
+        cdef long double cross = dxc * dyl - dyc * dxl
+        if cross != 0:
+            return False
+
+        if abs(dxl) >= abs(dyl):
+            if dxl > 0:
+                return v1[0] <= p[0] and p[0] <= v2[0]
+            return v2[0] <= p[0] and p[0] <= v1[0]
+
+        else:
+            if dyl > 0:
+                return v1[1] <= p[1] and p[1] <= v2[1]
+
+            return v2[1] <= p[1] and p[1] <= v1[1]
 
 class Triangle:
     all_edges = dict()
     all_triangles = dict()
-    plot_step = 0
 
     def __init__(self, points=list, parent=None, create_edges=True):
         self.points = points
@@ -64,32 +88,8 @@ class Triangle:
     def plot_all_triangles(cls):
         plot_triangles(cls.all_triangles)
 
-    @staticmethod
-    def cross(p, v1, v2):
-        """
-            Check if point p lies on the line between v1 and v2 points.
-            https://stackoverflow.com/questions/11907947/how-to-check-if-a-point-lies-on-a-line-between-2-other-points
-        """
-        dxc = p[0] - v1[0]
-        dyc = p[1] - v1[1]
 
-        dxl = v2[0] - v1[0]
-        dyl = v2[1] - v1[1]
 
-        cross = dxc * dyl - dyc * dxl
-        if cross != 0:
-            return False
-
-        if abs(dxl) >= abs(dyl):
-            if dxl > 0:
-                return v1[0] <= p[0] and p[0] <= v2[0]
-            return v2[0] <= p[0] and p[0] <= v1[0]
-
-        else:
-            if dyl > 0:
-                return v1[1] <= p[1] and p[1] <= v2[1]
-
-            return v2[1] <= p[1] and p[1] <= v1[1]
 
     def get_neighbour(self, e):
         if e.triangle1 and self == e.triangle1:
@@ -104,6 +104,13 @@ class Triangle:
 
     def find_child(self, point, edge=None):
 
+        # all_match = True
+        # pts = [(4, 1), (-4, 0), (3, -5)]
+        # for pt in pts:
+        #     if pt not in self.points:
+        #         all_match = False
+        # if all_match:
+        #     print("match);")
         # Traverse triangle's children to get to the leaf node (triangle) which contains current point
         if self.children:
             # If triangle has children, one of them must contain the point,
@@ -126,11 +133,11 @@ class Triangle:
     def point_on_edge(self, point):
         v1, v2, v3 = self.points
 
-        if self.cross(point, v1, v2):
+        if cross(point, v1, v2):
             return v1, v2
-        elif self.cross(point, v1, v3):
+        elif cross(point, v1, v3):
             return v1, v3
-        elif self.cross(point, v2, v3):
+        elif cross(point, v2, v3):
             return v2, v3
 
         return None
@@ -139,12 +146,12 @@ class Triangle:
         # Returns true if p lies in the circumcircle of triangle (v1, v2, v3)
         v1, v2, v3 = self.points
 
-        ax_ = v1[0] - p[0]
-        ay_ = v1[1] - p[1]
-        bx_ = v2[0] - p[0]
-        by_ = v2[1] - p[1]
-        cx_ = v3[0] - p[0]
-        cy_ = v3[1] - p[1]
+        cdef long double ax_ = v1[0] - p[0]
+        cdef long double ay_ = v1[1] - p[1]
+        cdef long double bx_ = v2[0] - p[0]
+        cdef long double by_ = v2[1] - p[1]
+        cdef long double cx_ = v3[0] - p[0]
+        cdef long double cy_ = v3[1] - p[1]
 
         return ((ax_ * ax_ + ay_ * ay_) * (bx_ * cy_ - cx_ * by_) - (bx_ * bx_ + by_ * by_) * (ax_ * cy_ - cx_ * ay_) + (cx_ * cx_ + cy_ * cy_) * (ax_ * by_ - bx_ * ay_)) > 0
 
