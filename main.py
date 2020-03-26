@@ -7,8 +7,8 @@ sys.setrecursionlimit(10000)
 
 
 def triangulate():
-    test = True
-    # test = False
+    # test = True
+    test = False
 
     if test:
         f = 'data/test.txt'
@@ -78,10 +78,6 @@ def triangulate():
                 # TODO make use of points, update when removing edges -> use edges to find adjacent point
                 # list comprehension is probably faster, use that
                 (neighbour_root) = list(set(neighbour.points).difference(set([v1, v2])))[0]  # must be nicer!
-                # neighbour_root = neighbour.points[:]  # fastest way to copy list
-                # neighbour_root.remove(v1)
-                # neighbour_root.remove(v2)
-                # neighbour_root = neighbour_root[0]
 
                 # Create new triangles
                 t1 = Triangle([p, v1, neighbour_root], parent=t, create_edges=False)
@@ -119,7 +115,7 @@ def triangulate():
                 change_edge.replace_neighbour(t, t1)
 
                 # Plot changes
-                D.plot_all_edges()
+                # D.plot_all_edges()
 
                 # Must determine and put edge in CW direction
                 # Validate T1
@@ -140,8 +136,7 @@ def triangulate():
                 # Neighbour also gets new triangles as children
                 neighbour.children.update([t1, t2])
 
-
-    print("Start inserting points")
+    print("Start inserting {} points.".format(point_count))
     start_time = time.time()
     # Loop remaining points
     np.random.shuffle(points)
@@ -162,10 +157,6 @@ def triangulate():
             # Get triangle1 root point (point opposite of the edge
             v1, v2, v3 = edge.triangle1.points
             (root1) = list(set([v1, v2, v3]).difference(set([edge.point_from, edge.point_to])))[0]  # maybe I overcomplicated this..
-            # root1 = [v1, v2, v3]
-            # root1.remove(edge.point_from)
-            # root1.remove(edge.point_to)
-            # root1 = root1[0]
             root1, t1v2, t1v3 = counterclockwise(root1, edge.point_from, edge.point_to)
 
             t1 = Triangle([p, t1v3, root1], parent=edge.triangle1, create_edges=False)
@@ -187,10 +178,6 @@ def triangulate():
                 v1, v2, v3 = edge.triangle2.points
                 # TODO ugly, use list iterating, probably faster
                 (root2) = list(set([v1, v2, v3]).difference(set([edge.point_from, edge.point_to])))[0]  # maybe I overcomplicated this..
-                # root2 = [v1, v2, v3]
-                # root2.remove(edge.point_from)
-                # root2.remove(edge.point_to)
-                # root2 = root2[0]
 
                 root2, t2v2, t2v3 = counterclockwise(root2, edge.point_from, edge.point_to)
 
@@ -246,7 +233,8 @@ def triangulate():
             validate(p, t2, v2, v3)
             validate(p, t3, v3, v1)
 
-        D.plot_all_edges()
+    # Plot after every inserted point
+    # D.plot_all_edges()
 
     # Remove triangles that connect to root triangle
     root_points = D.points
@@ -262,7 +250,6 @@ def triangulate():
     for key in list(D.all_triangles):
         in_mesh = True
         points = ''
-        face_string = 'f'
 
         for point in D.all_triangles[key].points:
             if point in root_points:
@@ -270,8 +257,6 @@ def triangulate():
                 in_mesh = False
                 break
             points += "v {} {} {}\n".format(*point)
-            # f_count += 1
-            # face_string += " {}".format(f_count)
 
         if in_mesh:
             triangle_string += points

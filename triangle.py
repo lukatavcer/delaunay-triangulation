@@ -6,6 +6,7 @@ class Triangle:
     all_edges = dict()
     all_triangles = dict()
     plot_step = 1
+    no_plot = True
 
     def __init__(self, points=list, parent=None, create_edges=True):
         self.points = points
