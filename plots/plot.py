@@ -47,7 +47,8 @@ def plot_edges(edges, step):
 
     # Show plot
     # plt.show()
-    plt.savefig('plots/step_{}.png'.format(step))
+    plt.savefig('plots/step_{}.png'.format(step), bbox_inches='tight')
+    plt.close()
 
 
 def plot_triangles(triangles):
