@@ -46,8 +46,8 @@ def plot_edges(edges, step):
     plt.grid()
 
     # Show plot
-    # plt.show()
-    plt.savefig('plots/step_{}.png'.format(step), bbox_inches='tight')
+    plt.show()
+    # plt.savefig('plots/step_{}.png'.format(step), bbox_inches='tight')
     plt.close()
 
 

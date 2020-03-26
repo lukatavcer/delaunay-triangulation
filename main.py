@@ -7,8 +7,8 @@ sys.setrecursionlimit(10000)
 
 
 def triangulate():
-    # test = True
-    test = False
+    test = True
+    # test = False
 
     if test:
         f = 'data/test.txt'
@@ -21,6 +21,8 @@ def triangulate():
             if '#' not in line:
                 point = np.array(line.strip().split(), dtype=int)
                 points.append((point[0], point[1], point[2]))
+
+        point_count = len(points)
     else:
         # Read LAZ File
         inFile = File('data/GK_462_100.laz', mode='r')
@@ -28,7 +30,7 @@ def triangulate():
         I = inFile.Classification == 2
 
         # laz_points = inFile.points[:100]
-        point_count = 100000
+        point_count = 10000
         points = list(zip(inFile.X[:point_count], inFile.Y[:point_count], inFile.Z[:point_count]))
         # points = np.array(list(zip(inFile.X[:point_count], inFile.Y[:point_count], inFile.Z[:point_count])))
 
